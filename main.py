@@ -1,9 +1,11 @@
 # import the package to work on the datasets
 import pandas as pd
+import spacy
 from spacy.lang.en import English
 from bs4 import BeautifulSoup
 
 nlp = English()
+nlp_words = spacy.load("en_core_web_sm")
 
 # import the datasets to be worked with (changed encoding as default is utf-8, which
 # does not support some characters in the datasets
@@ -119,3 +121,14 @@ for name, group in groupedQs:
     group["processed_body"] = group["Body"].fillna('').apply(remove_tags).apply(remove_stopwords)
     print(group[["Title", "processed_title"]].head(3))
     print(group[["Body", "processed_body"]].head(3))
+    
+    
+#   get NOUNS, VERB etc
+doc = nlp_words(groupedQs)
+for group in doc:
+    group["processed_title"] = group["Title"].fillna('').apply(remove_stopwords)
+    group["processed_body"] = group["Body"].fillna('').apply(remove_tags).apply(remove_stopwords)
+    print(group[["processed_title"], ["processed_title"].pos_)
+    print(group[["processed_body"], ["processed_body"].pos_)
+
+                
